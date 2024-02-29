@@ -1,0 +1,14 @@
+.font-mina-header{
+    font-family: 'Mina' !important;
+    color: black !important;
+    font-size: 17px !important;
+    border-radius: 12px !important;
+
+}
+.font-mina-header:hover{
+    font-family: 'Mina' !important;
+    color: white !important;
+    border-radius: 12px !important;
+    background-color: #0000ff8c;
+    font-size: 17px !important;
+}
