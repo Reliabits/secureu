@@ -25,7 +25,7 @@ function Login() {
               <div className='location-back mt-2 px-4 pt-5 pb-2'>
               <input type='email' className='form-control form-contact mb-2' placeholder='email' />
               <input type='email' className='form-control form-contact mb-2' placeholder='password' />
-              <button type="button" class="btn btn-primary btn-lg btn-block mb-2">Login</button>
+              <button type="button" class="btn btn-primary btn-lg btn-block mb-2" onClick={()=> navigate('/mainDashboard')}>Login</button>
               <p className='text-warning font-mina' onClick={handleShow}>Forgot password ?</p>
               </div>
             </div>
