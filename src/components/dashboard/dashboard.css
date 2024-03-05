@@ -1,0 +1,22 @@
+.height-sidebar{
+    min-height: 93vh !important;
+    width: 10.666667% !important;
+}
+#parentM li .nav-link:hover{
+   background-color: rgba(0, 0, 139, 0.151); 
+   color: white;
+   cursor: pointer;
+}
+.text-area{
+    height: 286px !important;
+}
+.padding-group{
+    padding: 14px !important
+}
+.group-icon{
+    border-radius: 3px !important;
+    width: 47px !important;
+}
+.custom-input-group{
+    border-radius: 0px !important;
+}
