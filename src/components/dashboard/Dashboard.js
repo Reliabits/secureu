@@ -214,7 +214,7 @@ function Dashboard(props) {
                 }}>
                   <span className="nav-link text-dark text-center text-sm-start"
                   >
-                    <IoAddCircleOutline />
+                    <LuView />
                     <span className='ms-2 d-none d-sm-inline font-mina'>View password</span>
                   </span>
                 </li>
