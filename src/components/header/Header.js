@@ -17,11 +17,13 @@ function Header() {
                                
                             </Nav>
                             <Nav>
+                           
                             <Nav.Link   className='font-mina-header px-3'   onClick={() => navigate('/')}>Home</Nav.Link>
                                 <Nav.Link   className='font-mina-header px-3' onClick={() => navigate('/login')}>Login</Nav.Link>
                                 <Nav.Link  eventKey={2} className='font-mina-header px-3' onClick={() => navigate('/signup')}>
                                     Register
                                 </Nav.Link>
+                                <Nav.Link   className='font-mina-header px-3'   onClick={() => navigate('/dashboard')}>Dashboard</Nav.Link>
                             </Nav>
                         </Navbar.Collapse>
                     </div>

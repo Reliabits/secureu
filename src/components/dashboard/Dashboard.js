@@ -270,37 +270,37 @@ function Dashboard(props) {
                       <table class="table table-hover">
                         <thead>
                           <tr>
-                            <th scope="col">S/no</th>
-                            <th scope="col">email</th>
-                            <th scope="col">pasword</th>
-                            <th scope="col">action</th>
-                            <th scope="col">details</th>
+                            <th scope="col" className="font-mina">S/no</th>
+                            <th scope="col" className="font-mina">email</th>
+                            <th scope="col" className="font-mina">pasword</th>
+                            <th scope="col" className="font-mina">action</th>
+                            <th scope="col" className="font-mina">details</th>
                           </tr>
                         </thead>
                         <tbody>
                           <tr>
-                            <th scope="row">1</th>
-                            <td>devshehzad249@gmail.com</td>
-                            <td>123sdsdfsdf24223123123</td>
+                            <th scope="row" className="font-mina">1</th>
+                            <td className="font-mina">devshehzad249@gmail.com</td>
+                            <td className="font-mina">123sdsdfsdf24223123123</td>
                             <td>
                               <div class="btn-group" role="group" aria-label="Basic example">
                                 <button type="button" class="btn custom-btn"><MdContentCopy /> <MdAttachEmail /></button>
                                 <button type="button" class="btn  custom-btn"><MdContentCopy /> <MdPassword /></button>
                               </div>
                             </td>
-                            <td><button className="btn custom-btn-details" onClick={() => setModalShow(true)}>details</button></td>
+                            <td><button className="btn custom-btn-details font-mina" onClick={() => setModalShow(true)}>details</button></td>
                           </tr>
                           <tr>
-                            <th scope="row">2</th>
-                            <td>abc249@gmail.com</td>
-                            <td>asdfghjkl234242424</td>
+                            <th scope="row" className="font-mina">2</th>
+                            <td className="font-mina">abc249@gmail.com</td>
+                            <td className="font-mina">asdfghjkl234242424</td>
                             <td>
                               <div class="btn-group" role="group" aria-label="Basic example">
                                 <button type="button" class="btn custom-btn"><MdContentCopy /> <MdAttachEmail /></button>
                                 <button type="button" class="btn  custom-btn"><MdContentCopy /> <MdPassword /></button>
                               </div>
                             </td>
-                            <td><button className="btn custom-btn-details" onClick={() => setModalShow(true)}>details</button></td>
+                            <td><button className="btn custom-btn-details font-mina" onClick={() => setModalShow(true)}>details</button></td>
                           </tr>
                         </tbody>
                       </table>
@@ -339,10 +339,10 @@ function Dashboard(props) {
                     <div className="col-sm-6">
                       <select className="form-select form-control form-contact" aria-label="Default select example"
                         onChange={handleSelectChange}>
-                        <option selected>Category</option>
-                        <option value="Educational">Educational </option>
-                        <option value="Social">Social</option>
-                        <option value="Business">Business </option>
+                        <option selected className="font-mina">Category</option>
+                        <option value="Educational" className="font-mina">Educational </option>
+                        <option value="Social" className="font-mina">Social</option>
+                        <option value="Business" className="font-mina">Business </option>
                       </select> </div>
                   </div>
                   <div className="row mt-3">
@@ -359,7 +359,7 @@ function Dashboard(props) {
                       <div class="input-group">
                         <div className="input-group-prepend">
                           <div
-                            className="input-group-text padding-group"
+                            className="input-group-text padding-group font-mina genrate"
                             id="btnGroupAddon"
                             onClick={secondPasswordgenrate}
                           >genrate</div>
@@ -426,18 +426,18 @@ function Dashboard(props) {
                       <table class="table table-hover">
                         <thead>
                           <tr>
-                            <th scope="col">S/no</th>
-                            <th scope="col">description</th>
-                            <th scope="col">Details</th>
-                            <th scope="col">Action</th>
+                            <th scope="col" className="font-mina">S/no</th>
+                            <th scope="col" className="font-mina">description</th>
+                            <th scope="col" className="font-mina">Details</th>
+                            <th scope="col" className="font-mina">Action</th>
                           </tr>
                         </thead>
                         <tbody>
                           <tr>
-                            <th scope="row">1</th>
-                            <td>devshehzad249@gmail.com</td>
-                            <td>123sdsdfsdf24223123123</td>
-                            <td><button className="btn delete-btn">delete</button></td>
+                            <th scope="row" className="font-mina">1</th>
+                            <td className="font-mina">devshehzad249@gmail.com</td>
+                            <td className="font-mina">123sdsdfsdf24223123123</td>
+                            <td><button className="btn delete-btn font-mina">delete</button></td>
                           </tr>
                         </tbody>
                       </table>

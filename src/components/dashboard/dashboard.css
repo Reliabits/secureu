@@ -11,7 +11,15 @@
     height: 286px !important;
 }
 .padding-group{
-    padding: 14px !important
+    padding: 14px !important;
+    border-radius: 0px !important;
+}
+.genrate:hover{
+    padding: 14px !important;
+    border-radius: 0px !important;
+    cursor: pointer;
+    background-color: blue;
+    color: white;
 }
 .group-icon{
     border-radius: 3px !important;
