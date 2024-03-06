@@ -7,18 +7,37 @@ import { createNote, createPassword, listNote, listNoteUpdate, listPassword, lis
 import axios from "axios";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import { MdContentCopy } from "react-icons/md";
+import { MdAttachEmail, MdPassword, MdContentCopy } from "react-icons/md";
+import { TbPasswordFingerprint } from "react-icons/tb";
+import { LuView } from "react-icons/lu";
+import { ToastContainer, Bounce, toast } from "react-toastify";
 function Dashboard(props) {
   const navigate = useNavigate();
   const [tabs, setTabs] = useState(0);
   const [inputData, setInputData] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [passwordList, setPasswordList] = useState([])
   const [modalShow, setModalShow] = React.useState(false);
+  const [passwordLength, setpasswordLength] = useState(8);
+  const [genratePassword, setgenratePassword] = useState("");
+  const [lowerCase, setloweCase] = useState(false);
+  const [upperCase, setupperCase] = useState(false);
+  const [numbers, setNumbers] = useState(false);
+  const [symbols, setSymbols] = useState(false);
+
+  const userData = JSON.parse(localStorage.getItem("userData"))
 
   const handleChange = (event) => {
     let { name, value } = event.target;
     setInputData((prevUserData) => ({
       ...prevUserData,
       [name]: value,
+    }));
+  };
+  const handleSelectChange = (event) => {
+    setInputData((prevUserData) => ({
+      ...prevUserData,
+      category: event.target.value,
     }));
   };
   // 2nd pass genrate
@@ -29,9 +48,70 @@ function Dashboard(props) {
       ...prevUserData,
       ['password']: randomPassword,
     }));
+  }
+  // main pass genrate
+  const lowercaseList = "abcdefghijklmnopqrstuvwxyz";
+  const uppercaseList = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const numberList = "0123456789";
+  const symbolsList = "!@#$%^&*()?";
+
+  const passwordGenrate = () => {
+    let characterlist = "";
+    if (lowerCase) {
+      characterlist += lowercaseList;
+    }
+    if (upperCase) {
+      characterlist += uppercaseList;
+    }
+    if (numbers) {
+      characterlist += numberList;
+    }
+    if (symbols) {
+      characterlist += symbolsList;
+    }
+    let temPassword = "";
+    const characterlistLength = characterlist.length;
+    for (let i = 0; i < passwordLength; i++) {
+      const characterIndex = Math.round(Math.random() * characterlistLength);
+      temPassword += characterlist.charAt(characterIndex);
+    }
+    setgenratePassword(temPassword);
+  };
+  // copy password 
+  const copyPassword = () => {
+    if (genratePassword.length) {
+        navigator.clipboard.writeText(genratePassword);
+        toast.success("password copied to clipboard!", {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+        });
+    }
+};
 
 
-
+  // insert password
+  const handleSubmitPasswordCreate = async () => {
+    if (!inputData.url || !inputData.password || !inputData.category || !inputData.userName || !inputData.name || !inputData.details) {
+      return toast.error("Please fill all fields")
+    }
+    try {
+      setLoading(true);
+      let result = await createPassword({ ...inputData, createdBy: userData._id });
+      toast.success(result?.data?.message);
+      setTabs(0)
+    } catch (error) {
+      console.error("Error:", error);
+      toast.error(error?.response?.data?.error);
+    } finally {
+      setLoading(false);
+    }
   }
   return (
     <>
@@ -52,8 +132,8 @@ function Dashboard(props) {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <div class="form-group">
-            <label for="exampleInputEmail1">Site Url:</label>
+          <div class="form-group mb-2">
+            <label for="exampleInputEmail1" className="font-mina">Site Url:</label>
             <div class="input-group">
               <div className="input-group-prepend group-icon">
                 <div
@@ -62,11 +142,11 @@ function Dashboard(props) {
                   onClick={secondPasswordgenrate}
                 ><MdContentCopy /></div>
               </div>
-              <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="abc.com" />
+              <input type="email" className="form-control font-mina" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="abc.com" />
             </div>
           </div>
-          <div class="form-group">
-            <label for="exampleInputEmail1">User Name for site:</label>
+          <div className="form-group mb-2">
+            <label for="exampleInputEmail1" className="font-mina">User Name for site:</label>
             <div class="input-group">
               <div className="input-group-prepend group-icon">
                 <div
@@ -75,11 +155,11 @@ function Dashboard(props) {
                   onClick={secondPasswordgenrate}
                 ><MdContentCopy /></div>
               </div>
-              <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="User Name for site" />
+              <input type="email" className="form-control font-mina" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="User Name for site" />
             </div>
           </div>
-          <div class="form-group">
-            <label for="exampleInputEmail1">User Email for site:</label>
+          <div class="form-group mb-2">
+            <label for="exampleInputEmail1" className="font-mina">User Email for site:</label>
             <div class="input-group">
               <div className="input-group-prepend group-icon">
                 <div
@@ -88,11 +168,11 @@ function Dashboard(props) {
                   onClick={secondPasswordgenrate}
                 ><MdContentCopy /></div>
               </div>
-              <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="User Email for site" />
+              <input type="email" className="font-mina form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="User Email for site" />
             </div>
           </div>
-          <div class="form-group">
-            <label for="exampleInputEmail1">Password:</label>
+          <div class="form-group mb-2">
+            <label for="exampleInputEmail1" className="font-mina">Password:</label>
             <div class="input-group">
               <div className="input-group-prepend group-icon">
                 <div
@@ -101,22 +181,21 @@ function Dashboard(props) {
                   onClick={secondPasswordgenrate}
                 ><MdContentCopy /></div>
               </div>
-              <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="password" />
+              <input type="email" className=" font-mina form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="password" />
             </div>
           </div>
-          <div class="form-group">
-            <label for="exampleInputEmail1">Notes:</label>
-            <textarea type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="notes" />
+          <div class="form-group mb-2">
+            <label for="exampleInputEmail1" className="font-mina">Notes:</label>
+            <textarea type="email" className="form-control font-mina" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="notes" />
           </div>
 
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={props.onHide}>Close</Button>
-          <Button onClick={props.onHide} className="btn btn-danger">delete</Button>
+          <Button onClick={props.onHide} className="btn btn-danger font-mina">delete</Button>
         </Modal.Footer>
       </Modal>
 
-      <div className=' mt-4'>
+      <div className=''>
         <div className="row bg-primary py-2">
           <div className="col-md-4 offset-md-8 font-mina">Welcome Username &nbsp; <button className="btn btn-primary" onClick={() => navigate('/')}>back to home</button>  <button className='btn btn-danger font-mina' >logout</button></div>
         </div>
@@ -163,8 +242,17 @@ function Dashboard(props) {
                 }}>
                   <span className="nav-link text-dark text-center text-sm-start"
                   >
-                    <IoAddCircleOutline />
+                    <LuView />
                     <span className='ms-2 d-none d-sm-inline font-mina'>View notes</span>
+                  </span>
+                </li>
+                <li className="nav-item text-dark my-1  py-2 py-sm-0" onClick={() => {
+                  setTabs(4)
+                }}>
+                  <span className="nav-link text-dark text-center text-sm-start"
+                  >
+                    <TbPasswordFingerprint />
+                    <span className='ms-2 d-none d-sm-inline font-mina'>Genrate pass</span>
                   </span>
                 </li>
 
@@ -196,11 +284,23 @@ function Dashboard(props) {
                             <td>123sdsdfsdf24223123123</td>
                             <td>
                               <div class="btn-group" role="group" aria-label="Basic example">
-                                <button type="button" class="btn btn-secondary">copy email</button>
-                                <button type="button" class="btn btn-secondary">copy password</button>
+                                <button type="button" class="btn custom-btn"><MdContentCopy /> <MdAttachEmail /></button>
+                                <button type="button" class="btn  custom-btn"><MdContentCopy /> <MdPassword /></button>
                               </div>
                             </td>
-                            <td><button className="btn btn-danger" onClick={() => setModalShow(true)}>details</button></td>
+                            <td><button className="btn custom-btn-details" onClick={() => setModalShow(true)}>details</button></td>
+                          </tr>
+                          <tr>
+                            <th scope="row">2</th>
+                            <td>abc249@gmail.com</td>
+                            <td>asdfghjkl234242424</td>
+                            <td>
+                              <div class="btn-group" role="group" aria-label="Basic example">
+                                <button type="button" class="btn custom-btn"><MdContentCopy /> <MdAttachEmail /></button>
+                                <button type="button" class="btn  custom-btn"><MdContentCopy /> <MdPassword /></button>
+                              </div>
+                            </td>
+                            <td><button className="btn custom-btn-details" onClick={() => setModalShow(true)}>details</button></td>
                           </tr>
                         </tbody>
                       </table>
@@ -217,9 +317,10 @@ function Dashboard(props) {
                   </div>
                   <div className="row">
                     <div className="col-sm-12">
-                      <input type="text"
+                      <input
                         className=" form-contact form-control"
                         placeholder="enter your url"
+                        type="text"
                         name="url"
                         onChange={handleChange}
                       />
@@ -236,7 +337,8 @@ function Dashboard(props) {
                       />
                     </div>
                     <div className="col-sm-6">
-                      <select className="form-select form-control form-contact" aria-label="Default select example">
+                      <select className="form-select form-control form-contact" aria-label="Default select example"
+                        onChange={handleSelectChange}>
                         <option selected>Category</option>
                         <option value="Educational">Educational </option>
                         <option value="Social">Social</option>
@@ -244,7 +346,15 @@ function Dashboard(props) {
                       </select> </div>
                   </div>
                   <div className="row mt-3">
-                    <div className="col-sm-6"> <input type="text" className=" form-contact form-control" placeholder="User Email" /> </div>
+                    <div className="col-sm-6">
+                      <input
+                        type="email"
+                        className=" form-contact form-control"
+                        placeholder="User Email"
+                        name="userName"
+                        onChange={handleChange}
+                      />
+                    </div>
                     <div className="col-sm-6">
                       <div class="input-group">
                         <div className="input-group-prepend">
@@ -261,14 +371,26 @@ function Dashboard(props) {
                           aria-label="Input group example"
                           aria-describedby="btnGroupAddon"
                           name="password"
-                          value={inputData?.password} />
+                          value={inputData?.password}
+                          onChange={handleChange}
+                        />
                       </div>
                     </div>
                   </div>
                   <div className="row mt-3">
                     <div className="col-sm-12">
-                      <textarea className="form-control form-contact text-area" placeholder="enter your notes for reminder" />
-                      <button className="btn btn-primary mt-2 font-mina">Save</button>
+                      <textarea
+                        className="form-control form-contact text-area"
+                        placeholder="enter your notes for reminder"
+                        type="textarea"
+                        name="details"
+                        onChange={handleChange}
+                      />
+                      <button
+                        className="btn btn-primary mt-2 font-mina"
+                        disabled={loading}
+                        onClick={handleSubmitPasswordCreate}
+                      >Save</button>
                     </div>
                   </div>
                 </div>
@@ -315,22 +437,99 @@ function Dashboard(props) {
                             <th scope="row">1</th>
                             <td>devshehzad249@gmail.com</td>
                             <td>123sdsdfsdf24223123123</td>
-                            <td><button className="btn btn-danger">delete</button></td>
-                          </tr>
-                          <tr>
-                            <th scope="row">2</th>
-                            <td>devshehsdfsmail.com</td>
-                            <td>123sdfs234sdfsfsfas23123</td>
-                            <td><button className="btn btn-danger">delete</button></td>
-                          </tr>
-                          <tr>
-                            <th scope="row">3</th>
-                            <td>devshehsfsfsgmail.com</td>
-                            <td>123sdfsfsdfsdfs23123</td>
-                            <td><button className="btn btn-danger">delete</button></td>
+                            <td><button className="btn delete-btn">delete</button></td>
                           </tr>
                         </tbody>
                       </table>
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
+            {tabs === 4 && (
+              <>
+                <div className="container mt-5">
+                  <div className="row">
+                    <div className="col-sm-12 text-center">
+                      <h2 className="font-mina text-primary">Genrate Password</h2>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-sm-12">
+                      <div class="input-group">
+                        <div className="input-group-prepend group-icon">
+                          <div
+                            className="input-group-text padding-group custom-input-group"
+                          ><MdContentCopy onClick={copyPassword}/></div>
+                        </div>
+                        <input 
+                        type="text" 
+                        className="form-control font-mina" 
+                        id="exampleInputEmail1" 
+                        aria-describedby="emailHelp" 
+                        placeholder="select option to genrate"
+                        value={genratePassword} />
+                      </div>
+                      <span className="mt-3 d-flex">
+                        {" "}
+                        <input
+                          type="checkbox"
+                          checked={lowerCase}
+                          onChange={() => setloweCase(!lowerCase)}
+                        />{" "} &nbsp;
+                        <p className="font-mina pass-p mt-4">
+                          Include lower case (a-z)
+                        </p>
+                      </span>
+                      <span className=" d-flex">
+                        {" "}
+                        <input
+                          type="checkbox"
+                          checked={upperCase}
+                          onChange={() => setupperCase(!upperCase)}
+                        />{" "} &nbsp;
+                        <p className="font-mina pass-p mt-4">
+                          Include upper case (A-Z)
+                        </p>
+                      </span>
+                      <span className=" d-flex">
+                        {" "}
+                        <input
+                          type="checkbox"
+                          checked={numbers}
+                          onChange={() => setNumbers(!numbers)}
+                        />{" "} &nbsp;
+                        <p className="font-mina pass-p mt-4">
+                          Include number
+                        </p>
+                      </span>
+                      <span className=" d-flex">
+                        {" "}
+                        <input
+                          type="checkbox"
+                          checked={symbols}
+                          onChange={() => setSymbols(!symbols)}
+                        />{" "} &nbsp;
+                        <p className="font-mina pass-p mt-4">
+                          Include Symbols
+                        </p>
+                      </span>
+                      <span className="d-flex">
+                        {" "}
+                        <input
+                        type="range"
+                        min={8}
+                        max={40}
+                        defaultValue={passwordLength}
+                        checked={passwordLength}
+                        onChange={(event) =>
+                            setpasswordLength(event.currentTarget.value)
+                        }
+                        />{" "}
+                        &nbsp;{" "}
+                        <p className="font-fa lower-case mt-3">{passwordLength}</p>
+                      </span>
+                      <button className="btn custom-btn py-2 "  onClick={passwordGenrate}>Genrate password</button>
                     </div>
                   </div>
                 </div>
